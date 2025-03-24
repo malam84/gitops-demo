@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - app/environments/development/version.yaml
+      - app/environments/dev/version.yaml
 
 permissions:
   contents: write
