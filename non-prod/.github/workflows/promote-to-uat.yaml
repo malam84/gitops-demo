@@ -1,0 +1,42 @@
+# .github/workflows/promote-to-uat.yaml
+name: Promote to uat
+
+on:
+  pull_request:
+    types:
+      - closed
+    paths:
+      - app/environments/staging/version.yaml
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          # configure git client
+          git config --global user.email "<email address>"
+          git config --global user.name "<name>"
+
+          # create a new branch
+          git switch -c uat/${{ github.sha }}
+
+          # promote the change
+          cp app/environments/staging/version.yaml app/environments/uat/version.yaml
+
+          # push the change to the new branch
+          git add app/environments/uat/version.yaml
+          git commit -m "Promote staging to uat"
+          git push -u origin uat/${{ github.sha }}          
+      - run: |
+          gh pr create \
+            -B main \
+            -H uat/${{ github.sha }} \
+            --title "Promote staging to uat" \
+            --body "Automatically created by GHA"          
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

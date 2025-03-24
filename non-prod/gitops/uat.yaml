@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: uat-application
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: <my github repository url>
+    path: app
+    targetRevision: main
+    helm:
+      valueFiles:
+        - environments/uat/values.yaml
+        - environments/uat/version.yaml
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: uat
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
