@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <my github repository url>
+    repoURL: https://github.com/malam84/gitops-demo.git
     path: app
     targetRevision: main
     helm:

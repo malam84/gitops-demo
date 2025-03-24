@@ -6,13 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <my github repository url>
+    repoURL: https://github.com/malam84/gitops-demo.git
     path: app
     targetRevision: main
     helm:
       valueFiles:
-        - environments/development/values.yaml
-        - environments/development/version.yaml
+        - environments/dev/values.yaml
+        - environments/dev/version.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: development
